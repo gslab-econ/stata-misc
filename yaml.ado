@@ -4,9 +4,10 @@
 capture program drop yaml
 program define yaml
 	gettoken subcmd 0 : 0
-	Assert inlist("`subcmd'", "read", "local", "clear"), msg("invalid subcommand (`subcmd'). Valid are: read local clear")
+	Assert inlist("`subcmd'", "read", "local", "global", "clear"), msg("invalid subcommand (`subcmd'). Valid are: read local global clear")
 	yaml_`subcmd' `0'
 	if ("`subcmd'"=="local") c_local `r(lcl)' `"`r(value)'"'
+	if ("`subcmd'"=="global") global `r(lcl)' `"`r(value)'"'
 end
 
 // -------------------------------------------------------------------------------------------------
@@ -39,6 +40,30 @@ program define yaml_local, rclass
 	mata: yaml_local(`dict', "`key'")
 	return local lcl "`lcl'"
 	return local value "`value'"
+end
+
+// -------------------------------------------------------------------------------------------------
+
+capture program drop yaml_global
+program define yaml_global, rclass
+    Assert "`0'"!="", msg("yaml load: invalid syntax. Correct is lcl=key")
+
+    * Parse lcl=dict.key
+    gettoken lcl 0: 0 , parse("=")
+    gettoken equalsign 0: 0 , parse("=")
+    gettoken dict 0: 0 , parse(".")
+    gettoken equalsign key: 0 , parse(".")
+
+    * Remove blanks
+    local dict `dict'
+    local key `key'
+
+    Assert "`dict'"!="", msg("yaml load: dict is empty! args=<`0'>")
+    Assert "`key'"!="", msg("yaml load: key is empty! args=<`0'>")
+
+    mata: yaml_local(`dict', "`key'")
+    return local lcl "`lcl'"
+    return local value "`value'"
 end
 
 // -------------------------------------------------------------------------------------------------
