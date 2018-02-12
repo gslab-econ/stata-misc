@@ -108,11 +108,15 @@ transmorphic yaml_read(string scalar fn, real scalar verbose) {
 
 		//  Ignore comments
 		trimline = strtrim(line)
-		if ( strlen(trimline)==0 ) continue
-		if ( strpos(trimline, "#")==1 ) continue
+		if ( strlen(trimline)==0 | strpos(trimline, "#")==1 ) continue
 
 		// trim right BUT NOT left
+		// trimming starts at first #
 		line = strrtrim(line)
+		comment_pos = strpos(line, "#")
+		if (comment_pos > 0) {
+			line = substr(line, 1, comment_pos - 1)
+		}
 
 		// get level implied by indentation
 		indentation = strlen(line) - strlen(strltrim(line))

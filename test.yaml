@@ -2,7 +2,7 @@
 foo: bar
 spam: eggs
 the-ingredients:
-  a: 123
+  a: 123 
   b: 456
   c: 789
 # COMMENT
@@ -16,5 +16,5 @@ the-ingredients:
     f: z
   g: 007
 epilogue: some
-epilogue2: code
+epilogue2: code # END LINE COMMENT
 varlist: a b c d z
