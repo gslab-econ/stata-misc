@@ -107,8 +107,9 @@ transmorphic yaml_read(string scalar fn, real scalar verbose) {
 	while ( ( line = fget(fh) ) != J(0,0,"") ) {
 
 		//  Ignore comments
-		if ( strpos(line, "#")==1 | strlen(line)==0 ) continue
-		if ( strlen(strtrim(line))==0 ) continue
+		trimline = strtrim(line)
+		if ( strlen(trimline)==0 ) continue
+		if ( strpos(trimline, "#")==1 ) continue
 
 		// trim right BUT NOT left
 		line = strrtrim(line)

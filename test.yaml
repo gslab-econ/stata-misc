@@ -7,6 +7,7 @@ the-ingredients:
   c: 789
 # COMMENT
   dd:
+    # NESTED COMMENT
     d:
       x
     e:
